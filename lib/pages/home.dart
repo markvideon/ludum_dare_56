@@ -4,6 +4,8 @@ import 'package:ludum_dare_56/widgets/masked_text.dart';
 import 'package:ludum_dare_56/widgets/revealable_text.dart';
 
 import '../model/critters.dart';
+import '../widgets/rotator.dart';
+import '../widgets/streaks.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -16,6 +18,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool _isRevealed = false;
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.sizeOf(context);
@@ -65,6 +68,9 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               child: const SizedBox.expand(),
             ),
+          ),
+          const Rotator(
+            child: Streaks(),
           ),
           SizedBox(
             height: screenSize.height,
