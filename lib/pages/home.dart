@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:ludum_dare_56/widgets/masked_text.dart';
+import 'package:ludum_dare_56/widgets/revealable_text.dart';
 
 import '../model/critters.dart';
 
@@ -14,6 +15,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool _isRevealed = false;
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.sizeOf(context);
@@ -45,11 +47,24 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          const DecoratedBox(
-            decoration: BoxDecoration(
+          DecoratedBox(
+            decoration: const BoxDecoration(
               color: Colors.green,
             ),
-            child: SizedBox.expand(),
+            child: ShaderMask(
+              shaderCallback: (rect) {
+                return const RadialGradient(
+                  colors: [
+                    Colors.white,
+                    Colors.green,
+                    Colors.white,
+                    Colors.green,
+                  ],
+                  radius: 100.0
+                ).createShader(rect);
+              },
+              child: const SizedBox.expand(),
+            ),
           ),
           SizedBox(
             height: screenSize.height,
@@ -60,39 +75,71 @@ class _MyHomePageState extends State<MyHomePage> {
                   const SizedBox(height: 24),
                   DecoratedBox(
                     decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromRGBO(255, 255, 255, 0.6),
+                          blurRadius: 20.0
+                        )
+                      ]
                     ),
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(18.0),
-                        child: MaskedText(
+                        child: RevealableText(
+                          isRevealed: _isRevealed,
                           text: activeCritter.emojis.first,
                           style: const TextStyle(
                             fontSize: 128.0,
                           ),
-                        ),
+                        )
                       )
                     ),
                   ),
                   const SizedBox(height: 24.0),
-                  ...List.generate(
-                    candidateCount,
-                        (idx) {
-                      return Column(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              // TODO(Mark):
-                            },
-                            child: Text(candidates.elementAt(idx).label),
-                          ),
-                          const SizedBox(
-                            height: 12,
-                          )
-                        ],
-                      );
-                    },
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8.0)
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 48.0,
+                        vertical: 8,
+                      ),
+                      child: Column(
+                        children: List.generate(
+                          candidateCount,
+                              (idx) {
+                            final critter = candidates.elementAt(idx);
+
+                            return Padding(
+                              padding: EdgeInsets.symmetric(vertical: 12),
+                              child: Column(
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      // TODO(Mark):
+                                      if (critter == activeCritter) {
+                                        setState(() {
+                                          _isRevealed = true;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          _isRevealed = false;
+                                        });
+                                      }
+                                    },
+                                    child: Text(critter.label),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 24),
                 ],
