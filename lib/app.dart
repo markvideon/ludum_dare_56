@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ludum_dare_56/pages/game.dart';
 import 'package:ludum_dare_56/pages/home.dart';
 
 class MyApp extends StatelessWidget {
@@ -8,8 +9,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+        textTheme: const TextTheme(
+          headlineSmall: TextStyle(
+            fontSize: 48,
+          ),
+          headlineMedium: TextStyle(
+            fontSize: 72,
+          ),
+          headlineLarge: TextStyle(
+            fontSize: 108,
+          ),
+        ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
             minimumSize: WidgetStateProperty.all(
@@ -25,7 +38,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const Home(),
     );
   }
 }

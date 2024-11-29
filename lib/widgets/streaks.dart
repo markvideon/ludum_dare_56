@@ -1,30 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:vector_math/vector_math.dart' show radians, degrees;
-import 'dart:math';
+import 'package:vector_math/vector_math.dart' show radians;
 
 class Streaks extends StatelessWidget {
-  const Streaks({super.key});
+  const Streaks({
+    required this.colors,
+    super.key,
+  });
+
+  final List<Color> colors;
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: StreakPainter(),
+      painter: StreakPainter(
+        colors,
+      ),
       child: const SizedBox.expand(),
     );
   }
 }
 
 class StreakPainter extends CustomPainter {
-  final colors = [
-    Colors.pink,
-    Colors.green,
-    Colors.yellow,
-    Colors.green,
-    Colors.purple,
-    Colors.green,
-    Colors.blue,
-    Colors.green,
-  ];
+  const StreakPainter(this.colors);
+
+  final List<Color> colors;
 
   static const sliceCount = 24;
   static const increment = 360 / sliceCount;
