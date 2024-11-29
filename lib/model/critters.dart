@@ -96,7 +96,7 @@ enum Critter {
       return [ Critter.cat, ];
     case Critter.chipmunk:
     case Critter.rabbit:
-      return [ Critter.rabbit, ];
+      return [ Critter.chipmunk, Critter.rabbit, ];
   }
  }
 }
